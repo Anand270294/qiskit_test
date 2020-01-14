@@ -1,0 +1,775 @@
+
+    
+
+
+
+
+    
+\documentclass[11pt]{article}
+
+    
+    \usepackage[breakable]{tcolorbox}
+    \tcbset{nobeforeafter} % prevents tcolorboxes being placing in paragraphs
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    
+    \usepackage[T1]{fontenc}
+    % Nicer default font (+ math font) than Computer Modern for most use cases
+    \usepackage{mathpazo}
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % We will generate all images so they have a width \maxwidth. This means
+    % that they will get their normal width if they fit onto the page, but
+    % are scaled down if they would overflow the margins.
+    \makeatletter
+    \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+    \else\Gin@nat@width\fi}
+    \makeatother
+    \let\Oldincludegraphics\includegraphics
+    % Set max figure width to be 80% of text width, for now hardcoded.
+    \renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=.8\maxwidth]{#1}}
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionLabelFormat{nolabel}{}
+    \captionsetup{labelformat=nolabel}
+
+    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{Max\_Cut\_QAOA}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \newcommand{\prompt}[4]{
+        \llap{{\color{#2}[#3]: #4}}\vspace{-1.25em}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+    \begin{document}
+    
+    
+    \maketitle
+    
+    
+
+    
+    \hypertarget{max-cut-qaoa-for-n-2}{%
+\section{Max-Cut QAOA for n = 2}\label{max-cut-qaoa-for-n-2}}
+
+\hypertarget{quantum-approximate-optimization-algorithm-for-n-2-vertices}{%
+\subsection{Quantum Approximate Optimization Algorithm for n = 2
+vertices}\label{quantum-approximate-optimization-algorithm-for-n-2-vertices}}
+
+\hypertarget{understanding-how-the-qaoa-works-using-2-vertex-graph-so-solve-the-max-cut-problem}{%
+\subsubsection{Understanding how the QAOA works using 2-vertex graph so
+solve the max-cut
+problem}\label{understanding-how-the-qaoa-works-using-2-vertex-graph-so-solve-the-max-cut-problem}}
+
+\hypertarget{section}{%
+\subsection{-----------------------------------------------------------------------------------------------------------------------------------}\label{section}}
+
+\hypertarget{import-all-relavent-librariespackages-to-run-the-algorithm}{%
+\paragraph{Import all relavent libraries/packages to run the
+algorithm}\label{import-all-relavent-librariespackages-to-run-the-algorithm}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{qiskit} \PY{k}{import} \PY{o}{*}
+\PY{k+kn}{from} \PY{n+nn}{scipy} \PY{k}{import} \PY{n}{optimize} \PY{k}{as} \PY{n}{opt}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{import} \PY{n+nn}{networkx} \PY{k}{as} \PY{n+nn}{nx}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+\PY{o}{\PYZpc{}}\PY{k}{matplotlib} inline
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{for-n-2-connected-unweighted-graph-there-is-only-one-possible-type-of-graph-that-would-work-for-a-max-cut-problem-as-shown-below}{%
+\paragraph{For n = 2 connected unweighted graph there is only one
+possible type of graph that would work for a max-cut problem as shown
+below:}\label{for-n-2-connected-unweighted-graph-there-is-only-one-possible-type-of-graph-that-would-work-for-a-max-cut-problem-as-shown-below}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{G} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{Graph}\PY{p}{(}\PY{p}{)}
+\PY{n}{G}\PY{o}{.}\PY{n}{add\PYZus{}nodes\PYZus{}from}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{)}
+\PY{n}{G}\PY{o}{.}\PY{n}{add\PYZus{}edges\PYZus{}from}\PY{p}{(}\PY{p}{[}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+
+\PY{n}{nx}\PY{o}{.}\PY{n}{draw\PYZus{}shell}\PY{p}{(}\PY{n}{G}\PY{p}{,} \PY{n}{with\PYZus{}labels}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} \PY{n}{font\PYZus{}weight}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bold}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/home/anand/anaconda3/lib/python3.7/site-
+packages/networkx/drawing/nx\_pylab.py:579: MatplotlibDeprecationWarning:
+The iterable function was deprecated in Matplotlib 3.1 and will be removed in
+3.3. Use np.iterable instead.
+  if not cb.iterable(width):
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Max_Cut_QAOA_files/Max_Cut_QAOA_3_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{now-we-have-to-construct-the-quantum-circuit-for-the-max-cut-problem.-the-classical-max-cut-problem-is}{%
+\paragraph{Now we have to construct the quantum circuit for the max-cut
+problem. The classical Max-Cut problem is
+:}\label{now-we-have-to-construct-the-quantum-circuit-for-the-max-cut-problem.-the-classical-max-cut-problem-is}}
+
+\hypertarget{c_ij-max-1---_izjz-however-there-is-only-2-vertices-in-this-particular-problem-the-problem-reduces-to-cij-max-1---_1z_2z-the-sigma-notation-is-indicate-if-a-particula-vertex-is-on-the-s-or-the-neg-s-of-the-graph-where-if-it-is-the-value-of-sigma_iz--1-else-it-is-1-hence-the-quantum-circuit-converts-into}{%
+\paragraph{\texorpdfstring{\$ C\_\{\textless{}i,j\textgreater{}\} = max
+\sum \frac{1}{2} (1 - \sigma\_i\^{}Z\sigma\emph{j\^{}Z)\$ \#\#\#\#
+However, there is only 2 vertices in this particular problem, the
+problem reduces to : \#\#\#\# \$ C}\{\textless{}i,j\textgreater{}\} =
+max \frac{1}{2} (1 - \sigma\_1\^{}Z\sigma\_2\^{}Z)\$ \#\#\#\# The sigma
+notation is indicate if a particula vertex is on the \(S\) or the
+\(\neg S\) of the graph where if it is the value of \(\sigma_i^Z\) = -1
+else it is 1 \#\#\#\# Hence the quantum circuit converts into
+:}{\$ C\_\{\textless{}i,j\textgreater{}\} = max  (1 - \_i\^{}Zj\^{}Z)\$ \#\#\#\# However, there is only 2 vertices in this particular problem, the problem reduces to : \#\#\#\# \$ C\{\textless{}i,j\textgreater{}\} = max  (1 - \_1\^{}Z\_2\^{}Z)\$ \#\#\#\# The sigma notation is indicate if a particula vertex is on the S or the \textbackslash{}neg S of the graph where if it is the value of \textbackslash{}sigma\_i\^{}Z = -1 else it is 1 \#\#\#\# Hence the quantum circuit converts into :}}\label{c_ij-max-1---_izjz-however-there-is-only-2-vertices-in-this-particular-problem-the-problem-reduces-to-cij-max-1---_1z_2z-the-sigma-notation-is-indicate-if-a-particula-vertex-is-on-the-s-or-the-neg-s-of-the-graph-where-if-it-is-the-value-of-sigma_iz--1-else-it-is-1-hence-the-quantum-circuit-converts-into}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Initialize the circuit}
+\PY{n}{circuit} \PY{o}{=} \PY{n}{QuantumCircuit}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} Set the std params for the RX() gate}
+\PY{n}{beta} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{pi} \PY{c+c1}{\PYZsh{} range of betas for Rx is 0 \PYZlt{}= B \PYZlt{}= pi}
+\PY{n}{gamma} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{pi} \PY{o}{*} \PY{l+m+mi}{2} \PY{c+c1}{\PYZsh{} range of gammas for Rz 0 \PYZlt{}= g \PYZlt{}= 2pi}
+\PY{c+c1}{\PYZsh{} Declare hyperparams}
+\PY{n}{hyperparams} \PY{o}{=} \PY{p}{[}\PY{n}{gamma}\PY{p}{,} \PY{n}{beta}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{}\PYZsh{} MAX\PYZhy{}CUT circuit for 2\PYZhy{}vertices problem}
+\PY{n}{circuit}\PY{o}{.}\PY{n}{h}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}
+\PY{n}{circuit}\PY{o}{.}\PY{n}{h}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} declare the hamiltonian function}
+\PY{n}{Cost\PYZus{}hamiltonian} \PY{o}{=} \PY{n}{QuantumCircuit}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}
+\PY{n}{Cost\PYZus{}hamiltonian}\PY{o}{.}\PY{n}{cx}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{)}
+\PY{n}{Cost\PYZus{}hamiltonian}\PY{o}{.}\PY{n}{rz}\PY{p}{(}\PY{n}{hyperparams}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{)}
+\PY{n}{Cost\PYZus{}hamiltonian}\PY{o}{.}\PY{n}{cx}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{)}
+\PY{n}{Cost\PYZus{}hamiltonian}\PY{o}{.}\PY{n}{rx}\PY{p}{(}\PY{n}{hyperparams}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{)}
+\PY{n}{Cost\PYZus{}hamiltonian}\PY{o}{.}\PY{n}{rx}\PY{p}{(}\PY{n}{hyperparams}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}
+
+\PY{n}{circuit} \PY{o}{+}\PY{o}{=} \PY{n}{Cost\PYZus{}hamiltonian}
+
+\PY{c+c1}{\PYZsh{} Draw the ciruit out}
+\PY{n}{circuit}\PY{o}{.}\PY{n}{draw}\PY{p}{(}\PY{n}{output}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{mpl}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+ 
+            
+\prompt{Out}{outcolor}{3}{}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Max_Cut_QAOA_files/Max_Cut_QAOA_5_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+
+    \hypertarget{we-will-never-know-the-results-unless-the-measurement-is-made}{%
+\paragraph{We will never know the results unless the measurement is made
+:}\label{we-will-never-know-the-results-unless-the-measurement-is-made}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Create a Quantum Circuit}
+\PY{n}{meas} \PY{o}{=} \PY{n}{QuantumCircuit}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}
+\PY{n}{meas}\PY{o}{.}\PY{n}{barrier}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} map the quantum measurement to the classical bits}
+\PY{n}{meas}\PY{o}{.}\PY{n}{measure}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{,}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} The Qiskit circuit object supports composition using}
+\PY{c+c1}{\PYZsh{} the addition operator.}
+\PY{n}{qc} \PY{o}{=} \PY{n}{circuit}
+\PY{n}{qc} \PY{o}{+}\PY{o}{=} \PY{n}{meas}
+\PY{c+c1}{\PYZsh{}drawing the circuit}
+\PY{n}{qc}\PY{o}{.}\PY{n}{draw}\PY{p}{(}\PY{n}{output}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{mpl}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+ 
+            
+\prompt{Out}{outcolor}{4}{}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Max_Cut_QAOA_files/Max_Cut_QAOA_7_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+
+    \hypertarget{now-we-need-to-import-the-backend-from-the-library-in-this-case-a-simulator}{%
+\paragraph{Now, we need to import the backend from the library in this
+case a
+simulator:}\label{now-we-need-to-import-the-backend-from-the-library-in-this-case-a-simulator}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Use Aer\PYZsq{}s qasm\PYZus{}simulator}
+\PY{n}{backend\PYZus{}sim} \PY{o}{=} \PY{n}{Aer}\PY{o}{.}\PY{n}{get\PYZus{}backend}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{qasm\PYZus{}simulator}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Execute the circuit on the qasm simulator.}
+\PY{c+c1}{\PYZsh{} We\PYZsq{}ve set the number of repeats of the circuit}
+\PY{c+c1}{\PYZsh{} to be 1024, which is the default.}
+\PY{n}{job\PYZus{}sim} \PY{o}{=} \PY{n}{execute}\PY{p}{(}\PY{n}{qc}\PY{p}{,} \PY{n}{backend\PYZus{}sim}\PY{p}{,} \PY{n}{shots}\PY{o}{=}\PY{l+m+mi}{1024}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Grab the results from the job.}
+\PY{n}{result\PYZus{}sim} \PY{o}{=} \PY{n}{job\PYZus{}sim}\PY{o}{.}\PY{n}{result}\PY{p}{(}\PY{p}{)}
+\PY{n}{counts} \PY{o}{=} \PY{n}{result\PYZus{}sim}\PY{o}{.}\PY{n}{get\PYZus{}counts}\PY{p}{(}\PY{n}{qc}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{run-the-ciruit-and-finally-plot-the-histogram}{%
+\paragraph{Run the ciruit and finally plot the
+histogram:}\label{run-the-ciruit-and-finally-plot-the-histogram}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{qiskit}\PY{n+nn}{.}\PY{n+nn}{visualization} \PY{k}{import} \PY{n}{plot\PYZus{}histogram}
+\PY{n}{plot\PYZus{}histogram}\PY{p}{(}\PY{n}{counts}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+ 
+            
+\prompt{Out}{outcolor}{6}{}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Max_Cut_QAOA_files/Max_Cut_QAOA_11_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+
+    \hypertarget{however-we-did-not-get-the-result-we-expected-since-all-possible-qubit-combinations-came-with-equal-probablities.-for-this-particular-problem-we-know-that-each-vertex-must-lie-on-opposite-sides-of-the-cut-in-order-to-maximize-the-cost.}{%
+\paragraph{However, we did not get the result we expected since all
+possible qubit combinations came with equal probablities. For this
+particular problem we know that each vertex must lie on opposite sides
+of the cut in order to maximize the
+Cost.}\label{however-we-did-not-get-the-result-we-expected-since-all-possible-qubit-combinations-came-with-equal-probablities.-for-this-particular-problem-we-know-that-each-vertex-must-lie-on-opposite-sides-of-the-cut-in-order-to-maximize-the-cost.}}
+
+\hypertarget{now-we-have-to-employ-the-use-of-optimizers-to-tune-the-values-of-the-hyperparamters-to-minimize-the-cost-hence-we-declare-a-get-cost-function-which-returns-the-h_c}{%
+\paragraph{\texorpdfstring{Now we have to employ the use of optimizers
+to tune the values of the hyperparamters to minimize the Cost, hence we
+declare a get cost function which returns the \(<H_c>\)
+:}{Now we have to employ the use of optimizers to tune the values of the hyperparamters to minimize the Cost, hence we declare a get cost function which returns the \textless{}H\_c\textgreater{} :}}\label{now-we-have-to-employ-the-use-of-optimizers-to-tune-the-values-of-the-hyperparamters-to-minimize-the-cost-hence-we-declare-a-get-cost-function-which-returns-the-h_c}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{get\PYZus{}cost}\PY{p}{(}\PY{n}{counts}\PY{p}{,} \PY{n}{no\PYZus{}of\PYZus{}shots}\PY{p}{)}\PY{p}{:}
+    \PY{n}{cost} \PY{o}{=} \PY{l+m+mf}{0.0}
+    \PY{n}{c} \PY{o}{=} \PY{l+m+mi}{0}
+    \PY{k}{for} \PY{n}{qubit\PYZus{}string} \PY{p}{,} \PY{n}{expt} \PY{o+ow}{in} \PY{n}{counts}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+        \PY{k}{if} \PY{n}{qubit\PYZus{}string}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{==} \PY{n}{qubit\PYZus{}string}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{:}
+            \PY{n}{c} \PY{o}{=} \PY{l+m+mi}{0}
+        \PY{k}{else}\PY{p}{:}
+            \PY{n}{c} \PY{o}{=} \PY{l+m+mi}{1}
+        \PY{n}{cost} \PY{o}{+}\PY{o}{=} \PY{n}{c} \PY{o}{*} \PY{p}{(}\PY{n}{expt} \PY{o}{/} \PY{n}{no\PYZus{}of\PYZus{}shots}\PY{p}{)}
+    \PY{k}{return} \PY{n}{cost}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{then-we-will-also-define-a-function-that-runs-the-circuits-and-returns-the-h_c-of-the-problem-so-that-we-can-use-the-function-in-the-scipy.optimize.minimize-function}{%
+\paragraph{\texorpdfstring{Then we will also define a function that runs
+the circuits and returns the \(<H_c>\) of the problem so that we can use
+the function in the Scipy.Optimize.minimize function
+:}{Then we will also define a function that runs the circuits and returns the \textless{}H\_c\textgreater{} of the problem so that we can use the function in the Scipy.Optimize.minimize function :}}\label{then-we-will-also-define-a-function-that-runs-the-circuits-and-returns-the-h_c-of-the-problem-so-that-we-can-use-the-function-in-the-scipy.optimize.minimize-function}}
+
+\hypertarget{notice-that-we-return-the-cost-as-1---h_c-so-that-we-can-minimize-the-cost-expectation-value}{%
+\subparagraph{\texorpdfstring{Notice that we return the cost as 1 -
+\(<H_c>\) so that we can minimize the Cost Expectation
+value}{Notice that we return the cost as 1 - \textless{}H\_c\textgreater{} so that we can minimize the Cost Expectation value}}\label{notice-that-we-return-the-cost-as-1---h_c-so-that-we-can-minimize-the-cost-expectation-value}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{run\PYZus{}circuit\PYZus{}and\PYZus{}get\PYZus{}cost}\PY{p}{(}\PY{n}{hyperparams}\PY{p}{)}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{} Initialize the circuit}
+    \PY{n}{circuit} \PY{o}{=} \PY{n}{QuantumCircuit}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{}\PYZsh{} MAX\PYZhy{}CUT circuit for 2\PYZhy{}vertices problem}
+    \PY{n}{circuit}\PY{o}{.}\PY{n}{h}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}
+    \PY{n}{circuit}\PY{o}{.}\PY{n}{h}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} declare the hamiltonian function}
+    \PY{n}{Cost\PYZus{}hamiltonian} \PY{o}{=} \PY{n}{QuantumCircuit}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}
+    \PY{n}{Cost\PYZus{}hamiltonian}\PY{o}{.}\PY{n}{cx}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{)}
+    \PY{n}{Cost\PYZus{}hamiltonian}\PY{o}{.}\PY{n}{rz}\PY{p}{(}\PY{n}{hyperparams}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{)}
+    \PY{n}{Cost\PYZus{}hamiltonian}\PY{o}{.}\PY{n}{cx}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{)}
+    \PY{n}{Cost\PYZus{}hamiltonian}\PY{o}{.}\PY{n}{rx}\PY{p}{(}\PY{n}{hyperparams}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{)}
+    \PY{n}{Cost\PYZus{}hamiltonian}\PY{o}{.}\PY{n}{rx}\PY{p}{(}\PY{n}{hyperparams}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}
+
+    \PY{n}{circuit} \PY{o}{+}\PY{o}{=} \PY{n}{Cost\PYZus{}hamiltonian}
+
+    
+    \PY{c+c1}{\PYZsh{} Create a Quantum Circuit}
+    \PY{n}{meas} \PY{o}{=} \PY{n}{QuantumCircuit}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}
+    \PY{n}{meas}\PY{o}{.}\PY{n}{barrier}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{} map the quantum measurement to the classical bits}
+    \PY{n}{meas}\PY{o}{.}\PY{n}{measure}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{,}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} The Qiskit circuit object supports composition using}
+    \PY{c+c1}{\PYZsh{} the addition operator.}
+    \PY{n}{qc} \PY{o}{=} \PY{n}{circuit}
+    \PY{n}{qc} \PY{o}{+}\PY{o}{=} \PY{n}{meas}
+
+    \PY{c+c1}{\PYZsh{} Use Aer\PYZsq{}s qasm\PYZus{}simulator}
+    \PY{n}{backend\PYZus{}sim} \PY{o}{=} \PY{n}{Aer}\PY{o}{.}\PY{n}{get\PYZus{}backend}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{qasm\PYZus{}simulator}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Execute the circuit on the qasm simulator.}
+    \PY{c+c1}{\PYZsh{} We\PYZsq{}ve set the number of repeats of the circuit}
+    \PY{c+c1}{\PYZsh{} to be 1024, which is the default.}
+    \PY{n}{job\PYZus{}sim} \PY{o}{=} \PY{n}{execute}\PY{p}{(}\PY{n}{qc}\PY{p}{,} \PY{n}{backend\PYZus{}sim}\PY{p}{,} \PY{n}{shots}\PY{o}{=}\PY{l+m+mi}{1024}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Grab the results from the job.}
+    \PY{n}{result\PYZus{}sim} \PY{o}{=} \PY{n}{job\PYZus{}sim}\PY{o}{.}\PY{n}{result}\PY{p}{(}\PY{p}{)}
+    \PY{n}{counts} \PY{o}{=} \PY{n}{result\PYZus{}sim}\PY{o}{.}\PY{n}{get\PYZus{}counts}\PY{p}{(}\PY{n}{qc}\PY{p}{)}
+    
+    \PY{k}{return} \PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{n}{get\PYZus{}cost}\PY{p}{(}\PY{n}{counts}\PY{p}{,} \PY{n}{no\PYZus{}of\PYZus{}shots}\PY{o}{=}\PY{l+m+mi}{1024}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{we-can-finally-optimize-the-hyperparameters-we-shall-use-cobyla-algorithm-for-this-optimization-we-will-exploring-other-possible-optimizers-in-the-future}{%
+\paragraph{We can finally optimize the hyperparameters! We shall use
+COBYLA algorithm for this optimization (we will exploring other possible
+optimizers in the
+future)}\label{we-can-finally-optimize-the-hyperparameters-we-shall-use-cobyla-algorithm-for-this-optimization-we-will-exploring-other-possible-optimizers-in-the-future}}
+
+\hypertarget{set-the-hyperparamters-to-a-random-value-of-your-choice-and-run-the-optimizer}{%
+\paragraph{Set the hyperparamters to a random value of your choice and
+run the
+optimizer!}\label{set-the-hyperparamters-to-a-random-value-of-your-choice-and-run-the-optimizer}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{hyperparamters} \PY{o}{=} \PY{p}{[}\PY{l+m+mf}{0.4}\PY{p}{,} \PY{l+m+mf}{0.7}\PY{p}{]}
+\PY{c+c1}{\PYZsh{}hyperp\PYZus{}bounds = opt.Bounds([0, np.pi *2], [0, np.pi])}
+
+\PY{n}{res} \PY{o}{=} \PY{n}{opt}\PY{o}{.}\PY{n}{minimize}\PY{p}{(}\PY{n}{run\PYZus{}circuit\PYZus{}and\PYZus{}get\PYZus{}cost}\PY{p}{,}\PY{n}{hyperparamters}\PY{p}{,}\PY{n}{tol}\PY{o}{=} \PY{l+m+mf}{1e\PYZhy{}3}\PY{p}{,} \PY{n}{method}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{COBYLA}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{we-have-managed-to-succesfully-optimize-the-circuit-with-the-hyperparamter-values-for-gamma-1.4773-and-beta-2.3777.}{%
+\paragraph{We have managed to succesfully optimize the circuit with the
+hyperparamter values for Gamma = 1.4773 and Beta =
+2.3777.}\label{we-have-managed-to-succesfully-optimize-the-circuit-with-the-hyperparamter-values-for-gamma-1.4773-and-beta-2.3777.}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{res}\PY{p}{)}
+\PY{n}{hyperparams} \PY{o}{=} \PY{n}{res}\PY{o}{.}\PY{n}{x}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+     fun: 0.0009765625
+   maxcv: 0.0
+ message: 'Optimization terminated successfully.'
+    nfev: 30
+  status: 1
+ success: True
+       x: array([1.47730358, 2.37771659])
+\end{Verbatim}
+
+    \hypertarget{all-that-is-left-is-too-run-the-circuit-again-with-the-optimized-hyperparamters-and-see-the-results.}{%
+\paragraph{All that is left is too run the circuit again with the
+optimized hyperparamters and see the
+results.}\label{all-that-is-left-is-too-run-the-circuit-again-with-the-optimized-hyperparamters-and-see-the-results.}}
+
+\hypertarget{from-the-the-histogram-below-it-is-evident-that-we-managed-to-get-the-right-answer-where-the-vertices-of-the-graph-are-to-be-in-opposite-sides-of-the-cut-01-or-10-in-order-to-maximize-the-cut.}{%
+\paragraph{\texorpdfstring{From the the histogram below, it is evident
+that we managed to get the right answer where the vertices of the graph
+are to be in opposite sides of the cut \(|01>\) or \(|10>\) in order to
+maximize the
+cut.}{From the the histogram below, it is evident that we managed to get the right answer where the vertices of the graph are to be in opposite sides of the cut \textbar{}01\textgreater{} or \textbar{}10\textgreater{} in order to maximize the cut.}}\label{from-the-the-histogram-below-it-is-evident-that-we-managed-to-get-the-right-answer-where-the-vertices-of-the-graph-are-to-be-in-opposite-sides-of-the-cut-01-or-10-in-order-to-maximize-the-cut.}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{14}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Initialize the circuit}
+\PY{n}{circuit} \PY{o}{=} \PY{n}{QuantumCircuit}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}\PYZsh{} MAX\PYZhy{}CUT circuit for 2\PYZhy{}vertices problem}
+\PY{n}{circuit}\PY{o}{.}\PY{n}{h}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}
+\PY{n}{circuit}\PY{o}{.}\PY{n}{h}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} declare the hamiltonian function}
+\PY{n}{Cost\PYZus{}hamiltonian} \PY{o}{=} \PY{n}{QuantumCircuit}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}
+\PY{n}{Cost\PYZus{}hamiltonian}\PY{o}{.}\PY{n}{cx}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{)}
+\PY{n}{Cost\PYZus{}hamiltonian}\PY{o}{.}\PY{n}{rz}\PY{p}{(}\PY{n}{hyperparams}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{)}
+\PY{n}{Cost\PYZus{}hamiltonian}\PY{o}{.}\PY{n}{cx}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{)}
+\PY{n}{Cost\PYZus{}hamiltonian}\PY{o}{.}\PY{n}{rx}\PY{p}{(}\PY{n}{hyperparams}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{)}
+\PY{n}{Cost\PYZus{}hamiltonian}\PY{o}{.}\PY{n}{rx}\PY{p}{(}\PY{n}{hyperparams}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}
+
+\PY{n}{circuit} \PY{o}{+}\PY{o}{=} \PY{n}{Cost\PYZus{}hamiltonian}
+
+    
+\PY{c+c1}{\PYZsh{} Create a Quantum Circuit}
+\PY{n}{meas} \PY{o}{=} \PY{n}{QuantumCircuit}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}
+\PY{n}{meas}\PY{o}{.}\PY{n}{barrier}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} map the quantum measurement to the classical bits}
+\PY{n}{meas}\PY{o}{.}\PY{n}{measure}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{,}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} The Qiskit circuit object supports composition using}
+\PY{c+c1}{\PYZsh{} the addition operator.}
+\PY{n}{qc} \PY{o}{=} \PY{n}{circuit}
+\PY{n}{qc} \PY{o}{+}\PY{o}{=} \PY{n}{meas}
+
+\PY{c+c1}{\PYZsh{} Use Aer\PYZsq{}s qasm\PYZus{}simulator}
+\PY{n}{backend\PYZus{}sim} \PY{o}{=} \PY{n}{Aer}\PY{o}{.}\PY{n}{get\PYZus{}backend}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{qasm\PYZus{}simulator}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Execute the circuit on the qasm simulator.}
+\PY{c+c1}{\PYZsh{} We\PYZsq{}ve set the number of repeats of the circuit}
+\PY{c+c1}{\PYZsh{} to be 1024, which is the default.}
+\PY{n}{job\PYZus{}sim} \PY{o}{=} \PY{n}{execute}\PY{p}{(}\PY{n}{qc}\PY{p}{,} \PY{n}{backend\PYZus{}sim}\PY{p}{,} \PY{n}{shots}\PY{o}{=}\PY{l+m+mi}{1024}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Grab the results from the job.}
+\PY{n}{result\PYZus{}sim} \PY{o}{=} \PY{n}{job\PYZus{}sim}\PY{o}{.}\PY{n}{result}\PY{p}{(}\PY{p}{)}
+\PY{n}{counts} \PY{o}{=} \PY{n}{result\PYZus{}sim}\PY{o}{.}\PY{n}{get\PYZus{}counts}\PY{p}{(}\PY{n}{qc}\PY{p}{)}
+
+\PY{k+kn}{from} \PY{n+nn}{qiskit}\PY{n+nn}{.}\PY{n+nn}{visualization} \PY{k}{import} \PY{n}{plot\PYZus{}histogram}
+\PY{n}{plot\PYZus{}histogram}\PY{p}{(}\PY{n}{counts}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+ 
+            
+\prompt{Out}{outcolor}{14}{}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Max_Cut_QAOA_files/Max_Cut_QAOA_21_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+    \end{document}
