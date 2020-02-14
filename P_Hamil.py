@@ -40,11 +40,13 @@ class P_Hamil:
 
     
     def Hamify(self):
+        self.Hamil_exp = self.obj_exp
+
         for i in range(len(self.variables)):
             s_term = (1/2)*(I - self.Z[i])
-            self.obj_exp = self.obj_exp.subs(self.variables[i],s_term)
+            self.Hamil_exp = self.Hamil_exp.subs(self.variables[i],s_term)
 
-        self.Hamil_exp = expand(self.obj_exp)
+        self.Hamil_exp = expand(self.Hamil_exp)
         self.Hamil_exp = self.Hamil_exp.subs(I,1)
         coeff = self.Hamil_exp.as_coefficients_dict()
 
@@ -56,9 +58,14 @@ class P_Hamil:
 
     
 
-    # Create function to generate the QC
-    def perQubitMap(self,gamma,p):
+    # Map the qubits directly to each variable 
+    def perQubitMap(self, gamma, p, barrier=False, initial_Hadamard=False):
         self.p_hamilCir = QuantumCircuit(len(self.variables),len(self.variables))
+
+        if initial_Hadamard == True:
+            for i in range(len(self.variables)):
+                self.p_hamilCir.h(i)
+            self.p_hamilCir.barrier()
 
         for sub_cir in self.quanCir_list:
             if sum(sub_cir) > 1:
@@ -75,10 +82,28 @@ class P_Hamil:
             else:
                 self.p_hamilCir.rz(gamma, sub_cir.index(1))
 
+
+        if barrier == True:
+            self.p_hamilCir.barrier()
+
         return self.p_hamilCir
 
     # def perEdgeMap(self):
     #     continue
+
+    def expectation_value(self, results, shots):
+        counts = results.get_counts()
+
+        i = 0
+        expectation = 0
+        for c in counts:
+            x = self.obj_exp
+            for i in range(len(self.variables)):
+                x = x.subs(self.variables[i], int(c[i]))
+                
+            expectation += (counts[c] / shots) * x
+            
+        return expectation
 
     def drawCircuit(self,output):
         return self.p_hamilCir.draw(output=output)
