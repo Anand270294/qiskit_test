@@ -22,6 +22,7 @@ class M_Hamil:
             self.X.append(symbols('Y_{}'.format(var[i][len(var[i])-1])))
 
     
+    # Mixer Hamiltonian for qubits to have dynamicity between {0,1}
     def generalXMixer(self, beta, q, measure=False):
         self.mixer_circuit = QuantumCircuit(len(self.variables), len(self.variables))
         
